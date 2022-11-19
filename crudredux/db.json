@@ -1,0 +1,24 @@
+{
+  "productos": [
+    {
+      "nombre": "Rib eye 880g",
+      "precio": 300,
+      "id": 4
+    },
+    {
+      "nombre": "fanta",
+      "precio": 2,
+      "id": 6
+    },
+    {
+      "nombre": "zumo de piña ",
+      "precio": 100,
+      "id": 7
+    },
+    {
+      "nombre": "cocacolaZero",
+      "precio": 10,
+      "id": 8
+    }
+  ]
+}
