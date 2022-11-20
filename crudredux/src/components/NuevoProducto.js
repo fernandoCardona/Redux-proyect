@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { mostrarAlerta, ocultarAlertaAction } from '../actions/alertaAction';
 
 //Actions de Redux
 import { crearNuevoProductoAction } from '../actions/productoAction';
+ 
+
 
 export const NuevoProducto = ( { history } ) => {
     //CREAMOS EL state del formulario nuevo producto
@@ -16,7 +19,7 @@ export const NuevoProducto = ( { history } ) => {
     //acceder al state del store 
     const cargando = useSelector( state => state.productos.loading );
     const error = useSelector( state => state.productos.error );
-
+    const alerta = useSelector( state => state.alerta.alerta );
      
     //Atraves de dispatch llamamos a la funcion de action 
     const agregarProducto = ( producto ) => {
@@ -28,10 +31,16 @@ export const NuevoProducto = ( { history } ) => {
         e.preventDefault();
         //Validar Formulario 
             if ( nombre.trim() === '' || precio <= 0 ) {
+                const alerta = {
+                    msg: 'Todos los campos son obligatorios',
+                    classes: 'alert alert-danger text-center text-uppercase p3'
+                }
+                dispatch( mostrarAlerta( alerta ) );
+
                 return;
             }
         //Si no hay errores
-
+        dispatch( ocultarAlertaAction() );
         //crear nuevo producto 
         agregarProducto({
             id,
@@ -51,6 +60,7 @@ export const NuevoProducto = ( { history } ) => {
                         <h2 className="text-center mb-4 font-weight-bold">
                             Agregar nuevo producto
                         </h2>
+                        { alerta ? <p className={ alerta.classes }> { alerta.msg }</p> : null }
                         <form onSubmit={ handleNuevoProducto }>
                             <div className="form-group">
                                 <label>Id del Producto</label>
@@ -59,8 +69,8 @@ export const NuevoProducto = ( { history } ) => {
                                     placeholder="id del Producto"
                                     className="form-control"
                                     name="id"
-                                    value={ id }
-                                    onChange={ e => guardarId( e.target.value ) }
+                                    value={id}
+                                    onChange={ e => guardarId(e.target.value) }
                                 />
                             </div>
                             <div className="form-group">
@@ -70,8 +80,8 @@ export const NuevoProducto = ( { history } ) => {
                                     placeholder="Nombre del Producto"
                                     className="form-control"
                                     name="nombre"
-                                    value={ nombre }
-                                    onChange={ e => guardarNombre( e.target.value ) }
+                                    value={nombre}
+                                    onChange={ e => guardarNombre(e.target.value) }
                                 />
                             </div>
 
@@ -82,7 +92,7 @@ export const NuevoProducto = ( { history } ) => {
                                     placeholder="Precio del Producto"
                                     className="form-control"
                                     name="precio"
-                                    value={ precio }
+                                    value={precio}
                                     onChange={ e => guardarPrecio( Number(e.target.value) ) }
                                 />
                             </div>

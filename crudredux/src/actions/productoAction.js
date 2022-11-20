@@ -136,11 +136,24 @@ const obtenerProductoEditarAction = ( producto ) => ({
     type: OBTENER_PRODUCTOS_EDITAR,
     payload: producto
 });
-export const editarProducto = ( producto ) => ({
-
-})
-const editarProductoExito = () => ({
-    type: PRODUCTO_EDITADO_EXITO
+export const editarProductoAction = ( producto ) => {
+    return async( dispatch ) => {
+        dispatch( editarProducto() );
+        try {
+            await clienteAxios.put(`/productos/${producto.id}`, producto);
+             
+            dispatch( editarProductoExito( producto ) );
+        } catch (error) {
+             
+        }
+    }
+}
+const editarProducto = ( producto ) => ({
+    type: COMENZAR_EDICION_PRODUCTO
+});
+const editarProductoExito = ( producto ) => ({
+    type: PRODUCTO_EDITADO_EXITO,
+    payload: producto
 });
 const editarProductoError = () => ({
     type: PRODUCTO_EDITADO_ERROR,

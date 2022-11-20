@@ -90,22 +90,26 @@ export const productosReducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 loading: false,
-                pruductoEditar: action.payload    
+                productoEditar: action.payload    
             }
+
         case PRODUCTO_EDITADO_EXITO:
-            return {
-                ...state,
-                productos: state.productos.filter(
-                    producto => producto.id !== state.pruductoEliminar
-                ),
-                pruductoliminar: null   
+                return {
+                    ...state,
+                    pruductoEditar: null,
+                    productos: state.productos.map(
+                    producto => producto.id === action.payload.id
+                    ? producto = action.payload
+                    : producto
+                  ),
+                   
             }
         case PRODUCTO_EDITADO_ERROR:
-            return {
-                ...state,
-                loading: false,
-                error: action.payload    
-            }
+                return {
+                    ...state,
+                    loading: false,
+                    error: action.payload    
+             }
 
         default:
             return state;

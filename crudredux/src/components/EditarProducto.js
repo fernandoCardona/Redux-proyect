@@ -1,16 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { editarProductoAction } from '../actions/productoAction';
 
 
 export const EditarProducto = () => {
+    //Nuevo state de producto  
+    const [ producto, guardarProducto ] = useState({
+        id: '',
+        nombre: '',
+        precio: ''
+    });
+
+    const history = useHistory();
     //Usamos usDispatch para devolvernos una funcion
     const dispatch = useDispatch();
 
     //Acceder al state del producto en el store
-    const producto = useSelector( state => state.productos.pruductoEditar );
-    if(!producto) return null
-    const { nombre, precio, id } = producto;
+    const productoEditar = useSelector( state => state.productos.productoEditar );
 
+    useEffect(() => {
+        
+            guardarProducto( productoEditar );
+         
+    }, [productoEditar]);
+
+    //Leer los datos del formulario
+    const onChangeFormulario = (e) => {
+        e.preventDefault();
+        guardarProducto({
+            ...producto,
+            [e.target.name]: e.target.value 
+        });
+    }
+    
+       
+    const {  nombre, precio, id  } = producto;
+
+    const submitEditarProducto = (e) => {
+        e.preventDefault();
+        dispatch( editarProductoAction(producto) );
+        // redireccionamos al home
+        history.push('/');
+    } 
+   
     return (
         <div className="row justify-content-center">
             <div className="col-md-8">
@@ -19,7 +52,7 @@ export const EditarProducto = () => {
                         <h2 className="text-center mb-4 font-weight-bold">
                             Editar producto
                         </h2>
-                        <form action="">
+                        <form onSubmit={ submitEditarProducto }>
                             <div className="form-group">
                                 <label>Id del Producto</label>
                                 <input 
@@ -27,9 +60,11 @@ export const EditarProducto = () => {
                                     placeholder="id del Producto"
                                     className="form-control"
                                     name="id"
-                                    value={ id }
+                                    value={id}
+                                    onChange={ onChangeFormulario }
                                 />
                             </div>
+
                             <div className="form-group">
                                 <label>Nombre del Producto</label>
                                 <input 
@@ -37,7 +72,8 @@ export const EditarProducto = () => {
                                     placeholder="Nombre del Producto"
                                     className="form-control"
                                     name="nombre"
-                                    value={ nombre }
+                                    value={nombre}
+                                    onChange={ onChangeFormulario }
                                 />
                             </div>
 
@@ -48,7 +84,8 @@ export const EditarProducto = () => {
                                     placeholder="Precio del Producto"
                                     className="form-control"
                                     name="precio"
-                                    value={ precio }
+                                    value={precio}
+                                    onChange={ onChangeFormulario }
                                 />
                             </div>
                             <button 

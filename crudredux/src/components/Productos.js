@@ -49,7 +49,6 @@ export const Productos = () => {
                     </tr>
                 </thead>
                 <tbody>
-                
                 {
                     productos.length === 0
                     ? 'No hay productos' 
@@ -59,7 +58,6 @@ export const Productos = () => {
                         )) 
                     )
                 }
-                
                 </tbody>
             </table>
         </Fragment>
